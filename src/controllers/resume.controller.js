@@ -70,4 +70,28 @@ const addPersonalDetails = async (req, res) => {
   }
 };
 
-export { createResume, getAllResume, addPersonalDetails };
+const addSummary = async (req, res) => {
+  try {
+    const { summary } = req.body;
+    const { Id } = req.params;
+
+    if (!summary) {
+      res.status(400).send("summary is required!");
+    }
+
+    const data = await ResumeModel.findByIdAndUpdate(
+      Id,
+      { summary },
+      { new: true }
+    );
+    if (!data) {
+      res.status(500).send("error to update summary!");
+    }
+    res.status(200).send(data);
+  } catch (error) {
+    console.log("\n \n Error while adding summary, \n ", error);
+    res.status(500).send(error);
+  }
+};
+
+export { createResume, getAllResume, addPersonalDetails,addSummary };
