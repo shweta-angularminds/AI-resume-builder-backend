@@ -37,4 +37,37 @@ const getAllResume = async (req, res) => {
   }
 };
 
-export { createResume, getAllResume };
+const addPersonalDetails = async (req, res) => {
+  try {
+    const { firstName, lastName, jobTitle, address, phone, email } = req.body;
+    const { Id } = req.params;
+    if (!firstName || !lastName || !jobTitle || !address || !phone || !email) {
+      res.status(400).send("All fields are required!");
+    }
+
+    const data = await ResumeModel.findByIdAndUpdate(
+      Id,
+      {
+        firstName,
+        lastName,
+        jobTitle,
+        address,
+        phone,
+        email,
+      },
+      {
+        new: true,
+      }
+    );
+    if (!data) {
+      res.status(500).send("error while updating data");
+    }
+
+    res.status(200).json({ message: "Updated Succesfully!", data });
+  } catch (error) {
+    res.status(500).send(error);
+    console.log("\n Error occured while adding personal details\n ", error);
+  }
+};
+
+export { createResume, getAllResume, addPersonalDetails };
