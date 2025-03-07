@@ -37,9 +37,21 @@ const resumeSchema = new Schema(
     summary: {
       type: String,
     },
+    experiences: [
+      {
+        title: { type: String, required: true },
+        companyName: { type: String, required: true },
+        city: { type: String, required: true },
+        state: { type: String, required: true },
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: true },
+        workSummary: { type: String, required: true },
+      },
+    ],
   },
   {
     timestamps: true,
   }
 );
+
 export const ResumeModel = mongoose.model("resumes", resumeSchema);

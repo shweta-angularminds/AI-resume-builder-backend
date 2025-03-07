@@ -94,4 +94,68 @@ const addSummary = async (req, res) => {
   }
 };
 
-export { createResume, getAllResume, addPersonalDetails,addSummary };
+const addExperience = async (req, res) => {
+  try {
+    const { experiences } = req.body; 
+    const { Id } = req.params; 
+
+    
+
+    
+    if (!experiences || !Array.isArray(experiences)) {
+      return res.status(400).send("Experiences should be an array.");
+    }
+
+   
+    for (let exp of experiences) {
+      const {
+        city,
+        companyName,
+        endDate,
+        startDate,
+        state,
+        title,
+        workSummary,
+      } = exp;
+
+      if (
+        !city ||
+        !companyName ||
+        !endDate ||
+        !startDate ||
+        !state ||
+        !title ||
+        !workSummary
+      ) {
+        return res
+          .status(400)
+          .send("All fields are required for each experience!");
+      }
+    }
+
+   
+    const resume = await ResumeModel.findById(Id);
+
+    if (!resume) {
+      return res.status(404).send("Resume not found!");
+    }
+
+   
+    resume.experiences = experiences; 
+
+    await resume.save();
+
+    return res.status(200).send("Experiences updated successfully!");
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
+
+export {
+  createResume,
+  getAllResume,
+  addPersonalDetails,
+  addSummary,
+  addExperience,
+};
