@@ -186,6 +186,46 @@ const addEducation = async (req, res) => {
   }
 };
 
+const addSkills = async (req, res) => {
+  try {
+    const { skills } = req.body;
+    const { Id } = req.params;
+
+    if (!skills || !Array.isArray(skills)) {
+      return res.status(400).send("skills should be an array.");
+    }
+
+    for (let skill of skills) {
+      const {
+       name,rating
+      } = skill;
+
+      if (
+        !name ||
+        !rating 
+      ) {
+        return res
+          .status(400)
+          .send("All fields are required for each skills!");
+      }
+    }
+
+    const resume = await ResumeModel.findById(Id);
+
+    if (!resume) {
+      return res.status(404).send("Resume not found!");
+    }
+
+    resume.skills = skills;
+
+    await resume.save();
+
+    return res.status(200).send("skills updated successfully!");
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
 export {
   createResume,
   getAllResume,
@@ -193,4 +233,5 @@ export {
   addSummary,
   addExperience,
   addEducation,
+  addSkills
 };

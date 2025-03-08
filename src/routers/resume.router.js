@@ -3,6 +3,7 @@ import {
   addEducation,
   addExperience,
   addPersonalDetails,
+  addSkills,
   addSummary,
   createResume,
   getAllResume,
@@ -16,5 +17,7 @@ router.route("/:Id/add-personal-details").put(addPersonalDetails);
 router.route("/:Id/add-summary").put(addSummary);
 router.route("/:Id/add-experience").put(addExperience);
 router.route("/:Id/add-Education").put(addEducation);
+router.route("/:Id/add-skills").put(addSkills)
+
 
 export default router;

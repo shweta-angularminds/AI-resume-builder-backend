@@ -58,6 +58,12 @@ const resumeSchema = new Schema(
         score: { type: String, required: true },
       },
     ],
+    skills: [
+      {
+        name: { type: String, required: true },
+        rating: { type: Number, required: true },
+      },
+    ],
   },
   {
     timestamps: true,
