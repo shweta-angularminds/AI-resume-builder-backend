@@ -48,6 +48,16 @@ const resumeSchema = new Schema(
         workSummary: { type: String, required: true },
       },
     ],
+    educations: [
+      {
+        universityName: { type: String, required: true },
+        degree: { type: String, required: true },
+        major: { type: String, required: true },
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: true },
+        score: { type: String, required: true },
+      },
+    ],
   },
   {
     timestamps: true,

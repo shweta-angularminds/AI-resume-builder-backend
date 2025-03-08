@@ -96,17 +96,13 @@ const addSummary = async (req, res) => {
 
 const addExperience = async (req, res) => {
   try {
-    const { experiences } = req.body; 
-    const { Id } = req.params; 
+    const { experiences } = req.body;
+    const { Id } = req.params;
 
-    
-
-    
     if (!experiences || !Array.isArray(experiences)) {
       return res.status(400).send("Experiences should be an array.");
     }
 
-   
     for (let exp of experiences) {
       const {
         city,
@@ -133,15 +129,13 @@ const addExperience = async (req, res) => {
       }
     }
 
-   
     const resume = await ResumeModel.findById(Id);
 
     if (!resume) {
       return res.status(404).send("Resume not found!");
     }
 
-   
-    resume.experiences = experiences; 
+    resume.experiences = experiences;
 
     await resume.save();
 
@@ -150,7 +144,47 @@ const addExperience = async (req, res) => {
     return res.status(500).send(error.message);
   }
 };
+const addEducation = async (req, res) => {
+  try {
+    const { educations } = req.body;
+    const { Id } = req.params;
 
+    if (!educations || !Array.isArray(educations)) {
+      return res.status(400).send("Educations should be an array.");
+    }
+
+    for (let edu of educations) {
+      const { universityName, degree, major, startDate, endDate, score } = edu;
+
+      if (
+        !universityName ||
+        !degree ||
+        !major ||
+        !startDate ||
+        !endDate ||
+        !score
+      ) {
+        return res
+          .status(400)
+          .send("All fields are required for each education!");
+      }
+    }
+
+    const resume = await ResumeModel.findById(Id);
+
+    if (!resume) {
+      return res.status(404).send("Resume not found!");
+    }
+
+    resume.educations = educations;
+
+    await resume.save();
+
+    return res.status(200).send("educations updated successfully!");
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
 
 export {
   createResume,
@@ -158,4 +192,5 @@ export {
   addPersonalDetails,
   addSummary,
   addExperience,
+  addEducation,
 };
