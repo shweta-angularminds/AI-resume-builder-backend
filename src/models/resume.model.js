@@ -64,6 +64,11 @@ const resumeSchema = new Schema(
         rating: { type: Number, required: true },
       },
     ],
+    themeColor: {
+      type: String,
+      required: true,
+      default: "gray",
+    },
   },
   {
     timestamps: true,

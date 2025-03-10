@@ -196,17 +196,10 @@ const addSkills = async (req, res) => {
     }
 
     for (let skill of skills) {
-      const {
-       name,rating
-      } = skill;
+      const { name, rating } = skill;
 
-      if (
-        !name ||
-        !rating 
-      ) {
-        return res
-          .status(400)
-          .send("All fields are required for each skills!");
+      if (!name || !rating) {
+        return res.status(400).send("All fields are required for each skills!");
       }
     }
 
@@ -226,6 +219,59 @@ const addSkills = async (req, res) => {
   }
 };
 
+const getResumeDetails = async (req, res) => {
+  try {
+    const { Id } = req.params;
+    if (!Id) {
+      res.status(400).send("Resume Id is required!");
+    }
+    const data = await ResumeModel.findById(Id);
+    if (!data) {
+      res.status(400).send("ID is not valid");
+    }
+    res.status(200).send(data);
+  } catch (error) {
+    console.log("\n Error occured while getting resume details:\n", error);
+    res.status(500).send(error);
+  }
+};
+
+const setTheme = async (req, res) => {
+  try {
+    const { Id } = req.params;
+    const { themeColor } = req.body;
+    console.log(themeColor);
+
+    if (!Id) {
+      return res.status(400).send("ID is required!"); // Return here to stop further execution
+    }
+
+    if (!themeColor) {
+      return res.status(400).send("Theme color is required!"); // Additional validation
+    }
+
+    const data = await ResumeModel.findByIdAndUpdate(
+      Id,
+      { themeColor },
+      { new: true }
+    );
+
+    if (!data) {
+      return res.status(404).send("Resume not found"); // Changed to 404 as it's a 'not found' situation
+    }
+
+    res.status(200).json({
+      message: "Theme color updated successfully",
+      data: data,
+    }); // Sending a meaningful response
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("Server error occurred while updating the theme color");
+  }
+};
+
 export {
   createResume,
   getAllResume,
@@ -233,5 +279,7 @@ export {
   addSummary,
   addExperience,
   addEducation,
-  addSkills
+  addSkills,
+  getResumeDetails,
+  setTheme,
 };
