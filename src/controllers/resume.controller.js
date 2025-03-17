@@ -3,19 +3,31 @@ import { ResumeModel } from "../models/resume.model.js";
 const createResume = async (req, res) => {
   console.log("called");
   try {
+    // Destructure user_Id and resume_name from the request body
     const { user_Id, resume_name } = req.body;
+
+    // Check if user_Id or resume_name is missing
     if (!user_Id || !resume_name) {
-      res.status(400).send("User_id and resume name both required!");
-    }
-    const data = await ResumeModel.create({ user_Id, resume_name });
-    if (!data) {
-      res.status(500).send("Error to create resume");
+      return res.status(400).send("User_id and resume name both required!"); // Return response immediately
     }
 
-    res.status(200).send(data);
+    // Create the resume document with only user_Id and resume_name
+    const data = await ResumeModel.create({
+      user_Id,
+      resume_name,
+    });
+
+    // Check if resume creation was successful
+    if (!data) {
+      return res.status(500).send("Error creating resume"); // Return response immediately
+    }
+
+    // Send the created resume data as response
+    return res.status(200).send(data); // Return response immediately
   } catch (error) {
     console.log("\n \n error\n \n", error);
-    res.status(500).send(error);
+    // Send error response if any error occurs
+    return res.status(500).send(error.message || "Internal Server Error"); // Return response immediately
   }
 };
 
@@ -272,6 +284,25 @@ const setTheme = async (req, res) => {
   }
 };
 
+const deleteResume = async (req, res) => {
+  try {
+    console.log("In delete");
+    const { Id } = req.params;
+    if (!Id) {
+      res.send(400).send("Resume ID is required!");
+    }
+
+    const response = await ResumeModel.findByIdAndDelete(Id);
+    if (!response) {
+      res.status(500).send("Error to delete resume!");
+    }
+    res.status(200).send("Resume deleted Succesfully!");
+  } catch (error) {
+    console.log("\n Error occured while trying to delete resume:\n ", error);
+    res.status(500).send(error);
+  }
+};
+
 export {
   createResume,
   getAllResume,
@@ -282,4 +313,5 @@ export {
   addSkills,
   getResumeDetails,
   setTheme,
+  deleteResume,
 };

@@ -6,6 +6,7 @@ import {
   addSkills,
   addSummary,
   createResume,
+  deleteResume,
   getAllResume,
   getResumeDetails,
   setTheme,
@@ -19,8 +20,9 @@ router.route("/:Id/add-personal-details").put(addPersonalDetails);
 router.route("/:Id/add-summary").put(addSummary);
 router.route("/:Id/add-experience").put(addExperience);
 router.route("/:Id/add-Education").put(addEducation);
-router.route("/:Id/add-skills").put(addSkills)
+router.route("/:Id/add-skills").put(addSkills);
 router.route("/:Id").get(getResumeDetails);
 router.route("/:Id/theme").post(setTheme);
+router.route("/:Id/delete-resume").delete(deleteResume);
 
 export default router;
