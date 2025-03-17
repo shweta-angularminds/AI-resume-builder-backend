@@ -9,6 +9,7 @@ import {
   deleteResume,
   getAllResume,
   getResumeDetails,
+  renameResume,
   setTheme,
 } from "../controllers/resume.controller.js";
 
@@ -24,5 +25,6 @@ router.route("/:Id/add-skills").put(addSkills);
 router.route("/:Id").get(getResumeDetails);
 router.route("/:Id/theme").post(setTheme);
 router.route("/:Id/delete-resume").delete(deleteResume);
+router.route("/:Id/rename-resume").post(renameResume);
 
 export default router;

@@ -303,6 +303,32 @@ const deleteResume = async (req, res) => {
   }
 };
 
+const renameResume = async (req, res) => {
+  try {
+    const { resumeTitle } = req.body;
+    const { Id } = req.params;
+    console.log(resumeTitle);
+    if (!resumeTitle) {
+      res.status(400).send("Resume Title is required!");
+    }
+    if (!Id) {
+      res.status(400).send("Resume Id is required!");
+    }
+    const response = await ResumeModel.findByIdAndUpdate(
+      Id,
+      { resume_name: resumeTitle },
+      { new: true }
+    );
+    if (!response) {
+      res.status(500).send("Internal server Error");
+    }
+    res.status(200).send("Renamed successfully!");
+  } catch (error) {
+    console.log("Error occured while renaming resume:\n ", error);
+    res.status(500).send(error);
+  }
+};
+
 export {
   createResume,
   getAllResume,
@@ -314,4 +340,5 @@ export {
   getResumeDetails,
   setTheme,
   deleteResume,
+  renameResume,
 };
