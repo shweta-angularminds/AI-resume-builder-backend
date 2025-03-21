@@ -156,6 +156,46 @@ const addExperience = async (req, res) => {
     return res.status(500).send(error.message);
   }
 };
+
+const addProjects = async (req, res) => {
+  try {
+    const { projects } = req.body;
+    const { Id } = req.params;
+
+    if (!projects || !Array.isArray(projects)) {
+      return res.status(400).send("projects should be an array.");
+    }
+
+    for (let project of projects) {
+      const {
+        title,desc
+      } = project;
+
+      if (
+        !title||!desc
+      ) {
+        return res
+          .status(400)
+          .send("All fields are required for each projects!");
+      }
+    }
+
+    const resume = await ResumeModel.findById(Id);
+
+    if (!resume) {
+      return res.status(404).send("Resume not found!");
+    }
+
+    resume.projects = projects;
+
+    await resume.save();
+
+    return res.status(200).send("Projects updated successfully!");
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
 const addEducation = async (req, res) => {
   try {
     const { educations } = req.body;
@@ -335,6 +375,7 @@ export {
   addPersonalDetails,
   addSummary,
   addExperience,
+  addProjects,
   addEducation,
   addSkills,
   getResumeDetails,

@@ -48,6 +48,12 @@ const resumeSchema = new Schema(
         workSummary: { type: String, required: false },
       },
     ],
+    projects:[
+      {
+        title:{type:String,required:false},
+        desc:{type:String,required:false}
+      }
+    ],
     educations: [
       {
         universityName: { type: String, required: false },
